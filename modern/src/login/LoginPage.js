@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import {
-  useMediaQuery, InputLabel, Select, MenuItem, FormControl, Button, TextField, Link, Snackbar, IconButton, Tooltip,
+  useMediaQuery, InputLabel, Select, MenuItem, FormControl, Button, TextField, Link, Snackbar, IconButton, Tooltip, Typography,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import CloseIcon from '@mui/icons-material/Close';
@@ -14,8 +14,10 @@ import { useLocalization, useTranslation } from '../common/components/Localizati
 import LoginLayout from './LoginLayout';
 import usePersistedState from '../common/util/usePersistedState';
 import { handleLoginTokenListeners, nativeEnvironment, nativePostMessage } from '../common/components/NativeInterface';
-import LogoImage from './LogoImage';
 import { useCatch } from '../reactHelper';
+import LogoImageBlue from './LogoImageBlue';
+
+const greetingTime = require('greeting-time');
 
 const useStyles = makeStyles((theme) => ({
   options: {
@@ -39,6 +41,11 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     textAlign: 'center',
     marginTop: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+    textAlign: 'center',
+    marginBottom: theme.spacing(8),
   },
 }));
 
@@ -131,6 +138,12 @@ const LoginPage = () => {
 
   return (
     <LoginLayout>
+      {/* greetingTime(new Date()); */}
+      <div>
+        <Typography variant="h2" className={classes.title}>
+          {greetingTime(new Date())}
+        </Typography>
+      </div>
       <div className={classes.options}>
         {nativeEnvironment && (
           <Tooltip title={t('settingsServer')}>
@@ -141,7 +154,7 @@ const LoginPage = () => {
         )}
       </div>
       <div className={classes.container}>
-        {useMediaQuery(theme.breakpoints.down('lg')) && <LogoImage color={theme.palette.primary.main} />}
+        {useMediaQuery(theme.breakpoints.down('lg')) && <LogoImageBlue color={theme.palette.primary.main} />}
         <TextField
           required
           error={failed}
