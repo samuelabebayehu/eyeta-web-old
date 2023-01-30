@@ -1,5 +1,6 @@
 import React from 'react';
 import { useMediaQuery, Paper } from '@mui/material';
+import { grey } from '@mui/material/colors';
 import makeStyles from '@mui/styles/makeStyles';
 import { useTheme } from '@mui/material/styles';
 import LogoImage from './LogoImage';
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   paper: {
+    background: grey[200],
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',

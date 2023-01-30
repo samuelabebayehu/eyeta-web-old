@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import {
-  useMediaQuery, InputLabel, Select, MenuItem, FormControl, Button, TextField, Link, Snackbar, IconButton, Tooltip, Typography,
+  useMediaQuery, InputLabel, Select, MenuItem, FormControl, Button, TextField, Link, Snackbar, IconButton, Tooltip, Typography, Card, CardContent,
+  InputAdornment,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import CloseIcon from '@mui/icons-material/Close';
+import { grey } from '@mui/material/colors';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Visibility from '@mui/icons-material/Visibility';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useTheme } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -16,6 +21,7 @@ import usePersistedState from '../common/util/usePersistedState';
 import { handleLoginTokenListeners, nativeEnvironment, nativePostMessage } from '../common/components/NativeInterface';
 import { useCatch } from '../reactHelper';
 import LogoImageBlue from './LogoImageBlue';
+import StickyFooterA from '../common/components/StickyFooter';
 
 const greetingTime = require('greeting-time');
 
@@ -26,9 +32,10 @@ const useStyles = makeStyles((theme) => ({
     right: theme.spacing(1),
   },
   container: {
+    background: grey[50],
     display: 'flex',
     flexDirection: 'column',
-    gap: theme.spacing(2),
+    gap: theme.spacing(3),
   },
   extraContainer: {
     display: 'flex',
@@ -44,8 +51,13 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-    textAlign: 'center',
+    textAlign: 'left',
     marginBottom: theme.spacing(8),
+  },
+  footer: {
+    width: '100%',
+    position: 'fixed',
+    bottom: 0,
   },
 }));
 
@@ -70,6 +82,14 @@ const LoginPage = () => {
 
   const [announcementShown, setAnnouncementShown] = useState(false);
   const announcement = useSelector((state) => state.session.server.announcement);
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const generateLoginToken = async () => {
     if (nativeEnvironment) {
@@ -153,70 +173,98 @@ const LoginPage = () => {
           </Tooltip>
         )}
       </div>
-      <div className={classes.container}>
-        {useMediaQuery(theme.breakpoints.down('lg')) && <LogoImageBlue color={theme.palette.primary.main} />}
-        <TextField
-          required
-          error={failed}
-          label={t('userEmail')}
-          name="email"
-          value={email}
-          autoComplete="email"
-          autoFocus={!email}
-          onChange={(e) => setEmail(e.target.value)}
-          onKeyUp={handleSpecialKey}
-          helperText={failed && 'Invalid username or password'}
-        />
-        <TextField
-          required
-          error={failed}
-          label={t('userPassword')}
-          name="password"
-          value={password}
-          type="password"
-          autoComplete="current-password"
-          autoFocus={!!email}
-          onChange={(e) => setPassword(e.target.value)}
-          onKeyUp={handleSpecialKey}
-        />
-        <Button
-          onClick={handlePasswordLogin}
-          onKeyUp={handleSpecialKey}
-          variant="contained"
-          color="secondary"
-          disabled={!email || !password}
-        >
-          {t('loginLogin')}
-        </Button>
-        <div className={classes.extraContainer}>
-          <Button
-            className={classes.registerButton}
-            onClick={() => navigate('/register')}
-            disabled={!registrationEnabled}
-            color="secondary"
-          >
-            {t('loginRegister')}
-          </Button>
-          {languageEnabled && (
-            <FormControl fullWidth>
-              <InputLabel>{t('loginLanguage')}</InputLabel>
-              <Select label={t('loginLanguage')} value={language} onChange={(e) => setLanguage(e.target.value)}>
-                {languageList.map((it) => <MenuItem key={it.code} value={it.code}>{it.name}</MenuItem>)}
-              </Select>
-            </FormControl>
-          )}
-        </div>
-        {emailEnabled && (
-          <Link
-            onClick={() => navigate('/reset-password')}
-            className={classes.resetPassword}
-            underline="none"
-            variant="caption"
-          >
-            {t('loginReset')}
-          </Link>
-        )}
-      </div>
+      <Card sx={{ maxWidth: 350, borderRadius: '12px' }}>
+        <CardContent>
+          <div className={classes.container}>
+            {useMediaQuery(theme.breakpoints.down('lg')) && <LogoImageBlue color={theme.palette.primary.main} />}
+            <TextField
+              required
+              error={failed}
+              label={t('userEmail')}
+              name="email"
+              value={email}
+              autoComplete="email"
+              autoFocus={!email}
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyUp={handleSpecialKey}
+              helperText={failed && 'Invalid username or password'}
+              variant="standard"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="start">
+                    <IconButton>
+                      <AccountCircleIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <TextField
+              required
+              error={failed}
+              label={t('userPassword')}
+              name="password"
+              value={password}
+              type={showPassword ? 'text' : 'password'}
+              autoComplete="current-password"
+              autoFocus={!!email}
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyUp={handleSpecialKey}
+              variant="standard"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="start">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <Button
+              onClick={handlePasswordLogin}
+              onKeyUp={handleSpecialKey}
+              variant="contained"
+              color="secondary"
+              disabled={!email || !password}
+            >
+              {t('loginLogin')}
+            </Button>
+            <div className={classes.extraContainer}>
+              <Button
+                className={classes.registerButton}
+                onClick={() => navigate('/register')}
+                disabled={!registrationEnabled}
+                color="secondary"
+              >
+                {t('loginRegister')}
+              </Button>
+              {languageEnabled && (
+                <FormControl fullWidth>
+                  <InputLabel>{t('loginLanguage')}</InputLabel>
+                  <Select label={t('loginLanguage')} value={language} onChange={(e) => setLanguage(e.target.value)}>
+                    {languageList.map((it) => <MenuItem key={it.code} value={it.code}>{it.name}</MenuItem>)}
+                  </Select>
+                </FormControl>
+              )}
+            </div>
+            {emailEnabled && (
+              <Link
+                onClick={() => navigate('/reset-password')}
+                className={classes.resetPassword}
+                underline="none"
+                variant="caption"
+              >
+                {t('loginReset')}
+              </Link>
+            )}
+          </div>
+        </CardContent>
+      </Card>
       <Snackbar
         open={!!announcement && !announcementShown}
         message={announcement}
@@ -226,6 +274,9 @@ const LoginPage = () => {
           </IconButton>
         )}
       />
+      <div className={classes.footer}>
+        <StickyFooterA />
+      </div>
     </LoginLayout>
   );
 };
