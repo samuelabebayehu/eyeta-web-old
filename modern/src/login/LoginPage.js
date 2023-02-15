@@ -74,6 +74,7 @@ const LoginPage = () => {
   const [failed, setFailed] = useState(false);
 
   const [email, setEmail] = usePersistedState('loginEmail', '');
+  // const [uname, setUname] = usePersistedState('loginUserName', '');
   const [password, setPassword] = useState('');
 
   const registrationEnabled = useSelector((state) => state.session.server.registration);

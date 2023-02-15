@@ -10,13 +10,27 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import MapIcon from '@mui/icons-material/Map';
 import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { makeStyles } from '@mui/styles';
+// import { red } from '@mui/material/colors';
 
 import { sessionActions } from '../../store';
 import { useTranslation } from './LocalizationProvider';
 import { useRestriction } from '../util/permissions';
 import { nativePostMessage } from './NativeInterface';
 
+const useStyles = makeStyles((theme) => ({
+  bottomNavigation: {
+    background: theme.palette.primary.main,
+  },
+  selectedMenu: {
+    background: theme.palette.common.white,
+  },
+  disabledMenus: {
+    color: theme.palette.common.white,
+  },
+}));
 const BottomMenu = () => {
+  const classes = useStyles();
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -97,11 +111,11 @@ const BottomMenu = () => {
         break;
     }
   };
-
   return (
-    <Paper square elevation={3}>
-      <BottomNavigation value={currentSelection()} onChange={handleSelection} showLabels>
+    <Paper square elevation={6}>
+      <BottomNavigation className={classes.bottomNavigation} value={currentSelection()} onChange={handleSelection} showLabels>
         <BottomNavigationAction
+          className={classes.selectedMenu}
           label={t('mapTitle')}
           icon={(
             <Badge color="error" variant="dot" overlap="circular" invisible={socket !== false}>
@@ -111,13 +125,13 @@ const BottomMenu = () => {
           value="map"
         />
         {!disableReports && (
-          <BottomNavigationAction label={t('reportTitle')} icon={<DescriptionIcon />} value="reports" />
+          <BottomNavigationAction className={classes.disabledMenus} label={t('reportTitle')} icon={<DescriptionIcon />} value="reports" />
         )}
-        <BottomNavigationAction label={t('settingsTitle')} icon={<SettingsIcon />} value="settings" />
+        <BottomNavigationAction className={classes.disabledMenus} label={t('settingsTitle')} icon={<SettingsIcon />} value="settings" />
         {readonly ? (
           <BottomNavigationAction label={t('loginLogout')} icon={<ExitToAppIcon />} value="logout" />
         ) : (
-          <BottomNavigationAction label={t('settingsUser')} icon={<PersonIcon />} value="account" />
+          <BottomNavigationAction className={classes.disabledMenus} label={t('settingsUser')} icon={<PersonIcon />} value="account" />
         )}
       </BottomNavigation>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>

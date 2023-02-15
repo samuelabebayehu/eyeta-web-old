@@ -13,6 +13,10 @@ import PeopleIcon from '@mui/icons-material/People';
 import TodayIcon from '@mui/icons-material/Today';
 import PublishIcon from '@mui/icons-material/Publish';
 import SmartphoneIcon from '@mui/icons-material/Smartphone';
+import {
+  pink, orange, cyan, green,
+} from '@mui/material/colors';
+import { makeStyles } from '@mui/styles';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useTranslation } from '../../common/components/LocalizationProvider';
@@ -21,16 +25,35 @@ import {
 } from '../../common/util/permissions';
 import useFeatures from '../../common/util/useFeatures';
 
+const useStyles = makeStyles(() => ({
+  ListItemButton: {
+    root: {
+      '&:hover': {
+        backgroundColor: pink[100],
+        color: pink[700],
+      },
+      '&$selected': {
+        backgroundColor: orange[100],
+        color: orange[700],
+        '&:hover': {
+          backgroundColor: cyan[500],
+          color: green[700],
+        },
+      },
+    },
+  },
+}));
 const MenuItem = ({
   title, link, icon, selected,
 }) => (
   <ListItemButton key={link} component={Link} to={link} selected={selected}>
-    <ListItemIcon>{icon}</ListItemIcon>
+    <ListItemIcon sx={{ color: 'blue' }}>{icon}</ListItemIcon>
     <ListItemText primary={title} />
   </ListItemButton>
 );
 
 const SettingsMenu = () => {
+  const classes = useStyles();
   const t = useTranslation();
   const location = useLocation();
 
@@ -45,12 +68,15 @@ const SettingsMenu = () => {
   return (
     <>
       <List>
-        <MenuItem
-          title={t('sharedPreferences')}
-          link="/settings/preferences"
-          icon={<SettingsIcon />}
-          selected={location.pathname === '/settings/preferences'}
-        />
+        {admin && (
+          <MenuItem
+            classname={classes.meuListButton}
+            title={t('sharedPreferences')}
+            link="/settings/preferences"
+            icon={<SettingsIcon />}
+            selected={location.pathname === '/settings/preferences'}
+          />
+        )}
         {!readonly && (
           <>
             <MenuItem
