@@ -18,7 +18,7 @@ const MenuItem = ({
   title, link, icon, selected,
 }) => (
   <ListItemButton key={link} component={Link} to={link} selected={selected}>
-    <ListItemIcon sx={{ color: 'blue' }}>{icon}</ListItemIcon>
+    <ListItemIcon sx={{ color: 'red' }}>{icon}</ListItemIcon>
     <ListItemText primary={title} />
   </ListItemButton>
 );
