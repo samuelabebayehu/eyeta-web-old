@@ -16,7 +16,7 @@ const colors = {
 
 export default {
   background: {
-    default: colors.background,
+    default: '#f2f2f2',
   },
   primary: {
     main: colors.primary,

@@ -8,6 +8,7 @@ import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import { red } from '@mui/material/colors';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import RouteIcon from '@mui/icons-material/Route';
 import { Link, useLocation } from 'react-router-dom';
@@ -17,8 +18,41 @@ import { useAdministrator } from '../../common/util/permissions';
 const MenuItem = ({
   title, link, icon, selected,
 }) => (
-  <ListItemButton key={link} component={Link} to={link} selected={selected}>
-    <ListItemIcon sx={{ color: 'red' }}>{icon}</ListItemIcon>
+  <ListItemButton
+    key={link}
+    component={Link}
+    to={link}
+    selected={selected}
+    sx={{
+      '& svg': {
+        color: red[500],
+        transition: '0.2s',
+        transform: 'translateX(0) rotate(0)',
+      },
+      '&:hover, &:focus': {
+        bgcolor: 'unset',
+        '& svg:first-of-type': {
+          transform: 'translateX(4px) rotate(8deg) scale(1.1)',
+        },
+        '& svg:last-of-type': {
+          right: 0,
+          opacity: 1,
+        },
+      },
+      '&:after': {
+        content: '""',
+        position: 'absolute',
+        height: '80%',
+        display: 'block',
+        left: 0,
+        width: '1px',
+        bgcolor: 'divider',
+      },
+    }}
+  >
+    <ListItemIcon>
+      {icon}
+    </ListItemIcon>
     <ListItemText primary={title} />
   </ListItemButton>
 );

@@ -15,6 +15,7 @@ import {
   Menu,
   MenuItem,
   CardMedia,
+  Tooltip,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import CloseIcon from '@mui/icons-material/Close';
@@ -222,38 +223,49 @@ const StatusCard = ({ deviceId, position, onClose, disableActions, desktopPaddin
               </CardContent>
             )}
             <CardActions classes={{ root: classes.actions }} disableSpacing>
-              <IconButton
-                color="secondary"
-                onClick={(e) => setAnchorEl(e.currentTarget)}
-                disabled={!position}
-              >
-                <PendingIcon />
-              </IconButton>
-              <IconButton
-                onClick={() => navigate('/replay')}
-                disabled={disableActions || !position}
-              >
-                <ReplayIcon />
-              </IconButton>
-              <IconButton
-                onClick={() => navigate(`/settings/command-send/${deviceId}`)}
-                disabled={disableActions || readonly}
-              >
-                <PublishIcon />
-              </IconButton>
-              <IconButton
-                onClick={() => navigate(`/settings/device/${deviceId}`)}
-                disabled={disableActions || deviceReadonly}
-              >
-                <EditIcon />
-              </IconButton>
-              <IconButton
-                onClick={() => setRemoving(true)}
-                disabled={disableActions || deviceReadonly}
-                className={classes.negative}
-              >
-                <DeleteIcon />
-              </IconButton>
+              <Tooltip title="Maps">
+                <IconButton
+                  color="secondary"
+                  onClick={(e) => setAnchorEl(e.currentTarget)}
+                  disabled={!position}
+                >
+                  <PendingIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Replay">
+                <IconButton
+                  onClick={() => navigate('/replay')}
+                  disabled={disableActions || !position}
+                >
+                  <ReplayIcon />
+
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Send Command">
+                <IconButton
+                  onClick={() => navigate(`/settings/command-send/${deviceId}`)}
+                  disabled={disableActions || readonly}
+                >
+                  <PublishIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Edit Device">
+                <IconButton
+                  onClick={() => navigate(`/settings/device/${deviceId}`)}
+                  disabled={disableActions || deviceReadonly}
+                >
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Delete Device">
+                <IconButton
+                  onClick={() => setRemoving(true)}
+                  disabled={disableActions || deviceReadonly}
+                  className={classes.negative}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
             </CardActions>
           </Card>
         </Draggable>

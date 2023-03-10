@@ -14,7 +14,7 @@ import TodayIcon from '@mui/icons-material/Today';
 import PublishIcon from '@mui/icons-material/Publish';
 import SmartphoneIcon from '@mui/icons-material/Smartphone';
 import {
-  pink, orange, cyan, green,
+  pink, orange, cyan, green, red,
 } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
 import { Link, useLocation } from 'react-router-dom';
@@ -33,7 +33,7 @@ const useStyles = makeStyles(() => ({
         color: pink[700],
       },
       '&$selected': {
-        backgroundColor: orange[100],
+        backgroundColor: orange[700],
         color: orange[700],
         '&:hover': {
           backgroundColor: cyan[500],
@@ -46,8 +46,39 @@ const useStyles = makeStyles(() => ({
 const MenuItem = ({
   title, link, icon, selected,
 }) => (
-  <ListItemButton key={link} component={Link} to={link} selected={selected}>
-    <ListItemIcon sx={{ color: 'blue' }}>{icon}</ListItemIcon>
+  <ListItemButton
+    key={link}
+    component={Link}
+    to={link}
+    selected={selected}
+    sx={{
+      '& svg': {
+        color: red[500],
+        transition: '0.2s',
+        transform: 'translateX(0) rotate(0)',
+      },
+      '&:hover, &:focus': {
+        bgcolor: 'unset',
+        '& svg:first-of-type': {
+          transform: 'translateX(4px) rotate(8deg) scale(1.1)',
+        },
+        '& svg:last-of-type': {
+          right: 0,
+          opacity: 1,
+        },
+      },
+      '&:after': {
+        content: '""',
+        position: 'absolute',
+        height: '80%',
+        display: 'block',
+        left: 0,
+        width: '1px',
+        bgcolor: 'divider',
+      },
+    }}
+  >
+    <ListItemIcon>{icon}</ListItemIcon>
     <ListItemText primary={title} />
   </ListItemButton>
 );
