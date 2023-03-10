@@ -156,99 +156,117 @@ const UserPage = () => {
                 onChange={(event) => setItem({ ...item, phone: event.target.value })}
                 label={t('sharedPhone')}
               />
-              <FormControl>
-                <InputLabel>{t('mapDefault')}</InputLabel>
-                <Select
-                  label={t('mapDefault')}
-                  value={item.map || 'locationIqStreets'}
-                  onChange={(e) => setItem({ ...item, map: e.target.value })}
-                >
-                  {mapStyles.filter((style) => style.available).map((style) => (
-                    <MenuItem key={style.id} value={style.id}>
-                      <Typography component="span">{style.title}</Typography>
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <FormControl>
-                <InputLabel>{t('settingsCoordinateFormat')}</InputLabel>
-                <Select
-                  label={t('settingsCoordinateFormat')}
-                  value={item.coordinateFormat || 'dd'}
-                  onChange={(event) => setItem({ ...item, coordinateFormat: event.target.value })}
-                >
-                  <MenuItem value="dd">{t('sharedDecimalDegrees')}</MenuItem>
-                  <MenuItem value="ddm">{t('sharedDegreesDecimalMinutes')}</MenuItem>
-                  <MenuItem value="dms">{t('sharedDegreesMinutesSeconds')}</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl>
-                <InputLabel>{t('settingsSpeedUnit')}</InputLabel>
-                <Select
-                  label={t('settingsSpeedUnit')}
-                  value={(item.attributes && item.attributes.speedUnit) || 'kn'}
-                  onChange={(e) => setItem({ ...item, attributes: { ...item.attributes, speedUnit: e.target.value } })}
-                >
-                  <MenuItem value="kn">{t('sharedKn')}</MenuItem>
-                  <MenuItem value="kmh">{t('sharedKmh')}</MenuItem>
-                  <MenuItem value="mph">{t('sharedMph')}</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl>
-                <InputLabel>{t('settingsDistanceUnit')}</InputLabel>
-                <Select
-                  label={t('settingsDistanceUnit')}
-                  value={(item.attributes && item.attributes.distanceUnit) || 'km'}
-                  onChange={(e) => setItem({ ...item, attributes: { ...item.attributes, distanceUnit: e.target.value } })}
-                >
-                  <MenuItem value="km">{t('sharedKm')}</MenuItem>
-                  <MenuItem value="mi">{t('sharedMi')}</MenuItem>
-                  <MenuItem value="nmi">{t('sharedNmi')}</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl>
-                <InputLabel>{t('settingsAltitudeUnit')}</InputLabel>
-                <Select
-                  label={t('settingsAltitudeUnit')}
-                  value={(item.attributes && item.attributes.altitudeUnit) || 'm'}
-                  onChange={(e) => setItem({ ...item, attributes: { ...item.attributes, altitudeUnit: e.target.value } })}
-                >
-                  <MenuItem value="m">{t('sharedMeters')}</MenuItem>
-                  <MenuItem value="ft">{t('sharedFeet')}</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl>
-                <InputLabel>{t('settingsVolumeUnit')}</InputLabel>
-                <Select
-                  label={t('settingsVolumeUnit')}
-                  value={(item.attributes && item.attributes.volumeUnit) || 'ltr'}
-                  onChange={(e) => setItem({ ...item, attributes: { ...item.attributes, volumeUnit: e.target.value } })}
-                >
-                  <MenuItem value="ltr">{t('sharedLiter')}</MenuItem>
-                  <MenuItem value="usGal">{t('sharedUsGallon')}</MenuItem>
-                  <MenuItem value="impGal">{t('sharedImpGallon')}</MenuItem>
-                </Select>
-              </FormControl>
-              <SelectField
-                value={(item.attributes && item.attributes.timezone) || ''}
-                emptyValue=""
-                onChange={(e) => setItem({ ...item, attributes: { ...item.attributes, timezone: e.target.value } })}
-                endpoint="/api/server/timezones"
-                keyGetter={(it) => it}
-                titleGetter={(it) => it}
-                label={t('sharedTimezone')}
-              />
-              <TextField
-                value={item.poiLayer || ''}
-                onChange={(event) => setItem({ ...item, poiLayer: event.target.value })}
-                label={t('mapPoiLayer')}
-              />
-              <FormGroup>
-                <FormControlLabel
-                  control={<Checkbox checked={item.twelveHourFormat} onChange={(event) => setItem({ ...item, twelveHourFormat: event.target.checked })} />}
-                  label={t('settingsTwelveHourFormat')}
+              {admin && (
+                <FormControl>
+                  <InputLabel>{t('mapDefault')}</InputLabel>
+                  <Select
+                    label={t('mapDefault')}
+                    value={item.map || 'locationIqStreets'}
+                    onChange={(e) => setItem({ ...item, map: e.target.value })}
+                  >
+                    {mapStyles.filter((style) => style.available).map((style) => (
+                      <MenuItem key={style.id} value={style.id}>
+                        <Typography component="span">{style.title}</Typography>
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
+              {admin && (
+                <FormControl>
+                  <InputLabel>{t('settingsCoordinateFormat')}</InputLabel>
+                  <Select
+                    label={t('settingsCoordinateFormat')}
+                    value={item.coordinateFormat || 'dd'}
+                    onChange={(event) => setItem({ ...item, coordinateFormat: event.target.value })}
+                  >
+                    <MenuItem value="dd">{t('sharedDecimalDegrees')}</MenuItem>
+                    <MenuItem value="ddm">{t('sharedDegreesDecimalMinutes')}</MenuItem>
+                    <MenuItem value="dms">{t('sharedDegreesMinutesSeconds')}</MenuItem>
+                  </Select>
+                </FormControl>
+              )}
+              {admin && (
+                <FormControl>
+                  <InputLabel>{t('settingsSpeedUnit')}</InputLabel>
+                  <Select
+                    label={t('settingsSpeedUnit')}
+                    value={(item.attributes && item.attributes.speedUnit) || 'kn'}
+                    onChange={(e) => setItem({ ...item, attributes: { ...item.attributes, speedUnit: e.target.value } })}
+                  >
+                    <MenuItem value="kn">{t('sharedKn')}</MenuItem>
+                    <MenuItem value="kmh">{t('sharedKmh')}</MenuItem>
+                    <MenuItem value="mph">{t('sharedMph')}</MenuItem>
+                  </Select>
+                </FormControl>
+              )}
+              {admin && (
+                <FormControl>
+                  <InputLabel>{t('settingsDistanceUnit')}</InputLabel>
+                  <Select
+                    label={t('settingsDistanceUnit')}
+                    value={(item.attributes && item.attributes.distanceUnit) || 'km'}
+                    onChange={(e) => setItem({ ...item, attributes: { ...item.attributes, distanceUnit: e.target.value } })}
+                  >
+                    <MenuItem value="km">{t('sharedKm')}</MenuItem>
+                    <MenuItem value="mi">{t('sharedMi')}</MenuItem>
+                    <MenuItem value="nmi">{t('sharedNmi')}</MenuItem>
+                  </Select>
+                </FormControl>
+              )}
+              {admin && (
+                <FormControl>
+                  <InputLabel>{t('settingsAltitudeUnit')}</InputLabel>
+                  <Select
+                    label={t('settingsAltitudeUnit')}
+                    value={(item.attributes && item.attributes.altitudeUnit) || 'm'}
+                    onChange={(e) => setItem({ ...item, attributes: { ...item.attributes, altitudeUnit: e.target.value } })}
+                  >
+                    <MenuItem value="m">{t('sharedMeters')}</MenuItem>
+                    <MenuItem value="ft">{t('sharedFeet')}</MenuItem>
+                  </Select>
+                </FormControl>
+              )}
+              {admin && (
+                <FormControl>
+                  <InputLabel>{t('settingsVolumeUnit')}</InputLabel>
+                  <Select
+                    label={t('settingsVolumeUnit')}
+                    value={(item.attributes && item.attributes.volumeUnit) || 'ltr'}
+                    onChange={(e) => setItem({ ...item, attributes: { ...item.attributes, volumeUnit: e.target.value } })}
+                  >
+                    <MenuItem value="ltr">{t('sharedLiter')}</MenuItem>
+                    <MenuItem value="usGal">{t('sharedUsGallon')}</MenuItem>
+                    <MenuItem value="impGal">{t('sharedImpGallon')}</MenuItem>
+                  </Select>
+                </FormControl>
+              )}
+              {admin && (
+                <SelectField
+                  value={(item.attributes && item.attributes.timezone) || ''}
+                  emptyValue=""
+                  onChange={(e) => setItem({ ...item, attributes: { ...item.attributes, timezone: e.target.value } })}
+                  endpoint="/api/server/timezones"
+                  keyGetter={(it) => it}
+                  titleGetter={(it) => it}
+                  label={t('sharedTimezone')}
                 />
-              </FormGroup>
+              )}
+              {admin && (
+                <TextField
+                  value={item.poiLayer || ''}
+                  onChange={(event) => setItem({ ...item, poiLayer: event.target.value })}
+                  label={t('mapPoiLayer')}
+                />
+              )}
+              {admin && (
+                <FormGroup>
+                  <FormControlLabel
+                    control={<Checkbox checked={item.twelveHourFormat} onChange={(event) => setItem({ ...item, twelveHourFormat: event.target.checked })} />}
+                    label={t('settingsTwelveHourFormat')}
+                  />
+                </FormGroup>
+              )}
             </AccordionDetails>
           </Accordion>
           <Accordion>
@@ -293,73 +311,75 @@ const UserPage = () => {
               </Button>
             </AccordionDetails>
           </Accordion>
-          <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="subtitle1">
-                {t('sharedPermissions')}
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails className={classes.details}>
-              <TextField
-                label={t('userExpirationTime')}
-                type="date"
-                value={(item.expirationTime && moment(item.expirationTime).locale('en').format(moment.HTML5_FMT.DATE)) || '2099-01-01'}
-                onChange={(e) => setItem({ ...item, expirationTime: moment(e.target.value, moment.HTML5_FMT.DATE).locale('en').format() })}
-                disabled={!manager}
-              />
-              <TextField
-                type="number"
-                value={item.deviceLimit || 0}
-                onChange={(e) => setItem({ ...item, deviceLimit: Number(e.target.value) })}
-                label={t('userDeviceLimit')}
-                disabled={!admin}
-              />
-              <TextField
-                type="number"
-                value={item.userLimit || 0}
-                onChange={(e) => setItem({ ...item, userLimit: Number(e.target.value) })}
-                label={t('userUserLimit')}
-                disabled={!admin}
-              />
-              <FormGroup>
-                <FormControlLabel
-                  control={<Checkbox checked={item.disabled} onChange={(e) => setItem({ ...item, disabled: e.target.checked })} />}
-                  label={t('sharedDisabled')}
+          {admin && (
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography variant="subtitle1">
+                  {t('sharedPermissions')}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails className={classes.details}>
+                <TextField
+                  label={t('userExpirationTime')}
+                  type="date"
+                  value={(item.expirationTime && moment(item.expirationTime).locale('en').format(moment.HTML5_FMT.DATE)) || '2099-01-01'}
+                  onChange={(e) => setItem({ ...item, expirationTime: moment(e.target.value, moment.HTML5_FMT.DATE).locale('en').format() })}
                   disabled={!manager}
                 />
-                <FormControlLabel
-                  control={<Checkbox checked={item.administrator} onChange={(e) => setItem({ ...item, administrator: e.target.checked })} />}
-                  label={t('userAdmin')}
+                <TextField
+                  type="number"
+                  value={item.deviceLimit || 0}
+                  onChange={(e) => setItem({ ...item, deviceLimit: Number(e.target.value) })}
+                  label={t('userDeviceLimit')}
                   disabled={!admin}
                 />
-                <FormControlLabel
-                  control={<Checkbox checked={item.readonly} onChange={(e) => setItem({ ...item, readonly: e.target.checked })} />}
-                  label={t('serverReadonly')}
-                  disabled={!manager}
+                <TextField
+                  type="number"
+                  value={item.userLimit || 0}
+                  onChange={(e) => setItem({ ...item, userLimit: Number(e.target.value) })}
+                  label={t('userUserLimit')}
+                  disabled={!admin}
                 />
-                <FormControlLabel
-                  control={<Checkbox checked={item.deviceReadonly} onChange={(e) => setItem({ ...item, deviceReadonly: e.target.checked })} />}
-                  label={t('userDeviceReadonly')}
-                  disabled={!manager}
-                />
-                <FormControlLabel
-                  control={<Checkbox checked={item.limitCommands} onChange={(e) => setItem({ ...item, limitCommands: e.target.checked })} />}
-                  label={t('userLimitCommands')}
-                  disabled={!manager}
-                />
-                <FormControlLabel
-                  control={<Checkbox checked={item.disableReports} onChange={(e) => setItem({ ...item, disableReports: e.target.checked })} />}
-                  label={t('userDisableReports')}
-                  disabled={!manager}
-                />
-                <FormControlLabel
-                  control={<Checkbox checked={item.fixedEmail} onChange={(e) => setItem({ ...item, fixedEmail: e.target.checked })} />}
-                  label={t('userFixedEmail')}
-                  disabled={!manager}
-                />
-              </FormGroup>
-            </AccordionDetails>
-          </Accordion>
+                <FormGroup>
+                  <FormControlLabel
+                    control={<Checkbox checked={item.disabled} onChange={(e) => setItem({ ...item, disabled: e.target.checked })} />}
+                    label={t('sharedDisabled')}
+                    disabled={!manager}
+                  />
+                  <FormControlLabel
+                    control={<Checkbox checked={item.administrator} onChange={(e) => setItem({ ...item, administrator: e.target.checked })} />}
+                    label={t('userAdmin')}
+                    disabled={!admin}
+                  />
+                  <FormControlLabel
+                    control={<Checkbox checked={item.readonly} onChange={(e) => setItem({ ...item, readonly: e.target.checked })} />}
+                    label={t('serverReadonly')}
+                    disabled={!manager}
+                  />
+                  <FormControlLabel
+                    control={<Checkbox checked={item.deviceReadonly} onChange={(e) => setItem({ ...item, deviceReadonly: e.target.checked })} />}
+                    label={t('userDeviceReadonly')}
+                    disabled={!manager}
+                  />
+                  <FormControlLabel
+                    control={<Checkbox checked={item.limitCommands} onChange={(e) => setItem({ ...item, limitCommands: e.target.checked })} />}
+                    label={t('userLimitCommands')}
+                    disabled={!manager}
+                  />
+                  <FormControlLabel
+                    control={<Checkbox checked={item.disableReports} onChange={(e) => setItem({ ...item, disableReports: e.target.checked })} />}
+                    label={t('userDisableReports')}
+                    disabled={!manager}
+                  />
+                  <FormControlLabel
+                    control={<Checkbox checked={item.fixedEmail} onChange={(e) => setItem({ ...item, fixedEmail: e.target.checked })} />}
+                    label={t('userFixedEmail')}
+                    disabled={!manager}
+                  />
+                </FormGroup>
+              </AccordionDetails>
+            </Accordion>
+          )}
           <EditAttributesAccordion
             attribute={attribute}
             attributes={item.attributes}
