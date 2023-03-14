@@ -41,7 +41,7 @@ export default () => {
     {
       id: 'locationIqStreets',
       title: t('mapLocationIqStreets'),
-      style: `https://tiles.locationiq.com/v3/streets/vector.json?key=${locationIqKey || 'pk.0f147952a41c555a5b70614039fd148b'}`,
+      style: `https://tiles.locationiq.com/v3/dark/vector.json?key=${locationIqKey || 'pk.0f147952a41c555a5b70614039fd148b'}`,
       available: true,
     },
     {
