@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { sessionActions } from '../store';
 import { useLocalization, useTranslation } from '../common/components/LocalizationProvider';
 import LoginLayout from './LoginLayout';
-import usePersistedState from '../common/util/usePersistedState';
+import usePersistedState, { savePersistedState } from '../common/util/usePersistedState';
 import { handleLoginTokenListeners, nativeEnvironment, nativePostMessage } from '../common/components/NativeInterface';
 import { useCatch } from '../reactHelper';
 import LogoImageBlue from './LogoImageBlue';
@@ -52,10 +52,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
     textAlign: 'left',
-    marginBottom: theme.spacing(8),
+    marginTop: theme.spacing(2),
   },
   footer: {
-    width: '100%',
     position: 'fixed',
     bottom: 0,
   },
@@ -120,6 +119,7 @@ const LoginPage = () => {
       });
       if (response.ok) {
         const user = await response.json();
+        savePersistedState('savedUsername', user.name);
         generateLoginToken();
         dispatch(sessionActions.updateUser(user));
         navigate('/');
@@ -161,8 +161,10 @@ const LoginPage = () => {
     <LoginLayout>
       {/* greetingTime(new Date()); */}
       <div>
-        <Typography variant="h2" className={classes.title}>
+        <Typography variant="h3" className={classes.title}>
           {greetingTime(new Date())}
+          {' '}
+          {usePersistedState('savedUsername')}
         </Typography>
       </div>
       <div className={classes.options}>
