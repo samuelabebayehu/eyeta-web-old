@@ -73,6 +73,7 @@ const LoginPage = () => {
   const [failed, setFailed] = useState(false);
 
   const [email, setEmail] = usePersistedState('loginEmail', '');
+  const [username, setUsername] = usePersistedState('savedUsername', '');
   // const [uname, setUname] = usePersistedState('loginUserName', '');
   const [password, setPassword] = useState('');
 
@@ -119,6 +120,7 @@ const LoginPage = () => {
       });
       if (response.ok) {
         const user = await response.json();
+        setUsername(user.email);
         savePersistedState('savedUsername', user.name);
         generateLoginToken();
         dispatch(sessionActions.updateUser(user));
@@ -161,10 +163,10 @@ const LoginPage = () => {
     <LoginLayout>
       {/* greetingTime(new Date()); */}
       <div>
-        <Typography variant="h3" className={classes.title}>
+        <Typography variant="h2" className={classes.title}>
           {greetingTime(new Date())}
           {' '}
-          {usePersistedState('savedUsername')}
+          {username}
         </Typography>
       </div>
       <div className={classes.options}>
